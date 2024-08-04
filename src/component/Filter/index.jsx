@@ -1,7 +1,7 @@
 import Select, { selectClasses } from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 import { extendTheme, CssVarsProvider } from '@mui/joy/styles';
-
+import { CiBoxList } from "react-icons/ci";
 // import ViewListIcon from '@mui/icons-material/ViewList';
 // import ViewModuleIcon from '@mui/icons-material/ViewModule';
 // import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
@@ -121,10 +121,16 @@ const Filter = () => {
                             <Option>Gần đây (mới nhất)</Option>
                             <Option>Cũ nhất</Option>
                             <Option></Option>
+                          
                         </Select>
+                       
                     </CssVarsProvider>
-                </div>
+                   
 
+                </div>
+                <div className='mt-1'>
+                   <CiBoxList size={30}/>
+                   </div>
 
 
 

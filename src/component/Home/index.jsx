@@ -9,11 +9,18 @@ import 'boxicons';
 
 const Home = () => {
     return (
-        <div className="font-be py-[67px] px-[130px] h-[100vh]" >
-              <LikeNow></LikeNow> 
-            <Filter></Filter>
-            <Card></Card>
+        <div>
+            <div className="font-be py-[67px] px-[130px] h-[100vh]" >
+                <LikeNow></LikeNow>
+                <Filter></Filter>
+
+
+            </div>
+            <div className="mt-64">
+                <Card></Card>
+            </div>
             
+
         </div>
 
 

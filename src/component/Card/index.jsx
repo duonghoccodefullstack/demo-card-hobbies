@@ -29,7 +29,7 @@ const Card = () => {
 
  
     return (
-        <div>
+        <div className="" >
          
           
             <PaginatedGrid data={cardData} itemsPerPage={8} />

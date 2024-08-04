@@ -33,14 +33,14 @@ const PaginatedGrid = ({ data, itemsPerPage }) => {
     };
 
     return (
-        <div>
+        <div >
             {/* Render items */}
             <div>
                 {selectedCart && isFileOpen && 
                     <ProductDetail value={selectedCart} onClose={closeFile} />
                 }
             </div>  
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-x-[30px] gap-y-[20px] w-full font-be py-[67px] px-[130px] h-[100vh] mb-52">
                 {currentItems.map((item) => (
                     <div className='cursor-default'>
 
@@ -49,18 +49,18 @@ const PaginatedGrid = ({ data, itemsPerPage }) => {
                     onClick={() => handleCartClick(item)}
                     className="flex flex-col shadow-md rounded-lg h-[320px] w-[210px] cursor-pointer"
                 >
-                    <div className="w-[197px] h-[197px]">
-                        <img src={item.url} alt={item.author} className="rounded-xl pl-2" />
+                    <div className="w-[197px] h-[197px] ">
+                        <img src={item.url} alt={item.author} loading='lazy' className="rounded-xl pl-2" />
                     </div>
                     <div className="flex flex-col p-2">
-                        <div className='flex'>
-
+                        <div className='flex h-24'>
                         <p className="text-[20px]">{truncateText(item.author, 39)}</p>
+                        
                         <box-icon name='cart-add' size={"24px"}></box-icon>
                         </div>
                         <div className="flex justify-between">
-                            <span>{item.price}</span>
-                            <span>-99%</span>
+                            <span>{Number(item.price * 1000).toLocaleString()} VND</span>
+                            <span>-{item.saleoff * 100} %</span>
                         </div>
                     </div>
                 </div>
