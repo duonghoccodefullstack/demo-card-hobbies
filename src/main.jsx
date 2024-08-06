@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 // import Layout from './Component/Layout/Layout.jsx'
 import Home from './component/Home/index'
 import PaginatedGrid from './component/Pagination/test';
+import Test from './Mind X/lesson 5';
 // import About from './Component/Layout/About/about.jsx'
 // import Contact from './Component/Layout/Contact/contact.jsx';
 // import Login from './Component/Layout/Dasboard/Login.jsx';
@@ -36,6 +37,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Routes>
                     {/* <Route path="/" element={<Layout />} /> */}
                     <Route path="/" element={<Home />} />
+                    <Route path="/test" element={<Test />} />
                     {/* <Route path="/" element={<PaginatedGrid />} /> */}
                     {/* <Route path="/login" element={<Login />} />
                     <Route path="/loginotp" element={<Otp />} />

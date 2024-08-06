@@ -4,6 +4,7 @@ const PaginatedGrid = ({ data, itemsPerPage }) => {
     const [selectedCart, setSelectedCart] = useState(null);
     const [isFileOpen, setIsFileOpen] = useState(false);
 
+//   console.log(data);
   
     const truncateText = (text, length) => {
         if (text.length > length) {
@@ -15,6 +16,8 @@ const PaginatedGrid = ({ data, itemsPerPage }) => {
         setSelectedCart(item);
         setIsFileOpen(true);
     };
+ 
+    
 
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -32,10 +35,11 @@ const PaginatedGrid = ({ data, itemsPerPage }) => {
         setIsFileOpen(false);
     };
 
+    
     return (
-        <div >
+        <div className='relative' >
             {/* Render items */}
-            <div>
+            <div className='absolute -top-[65vw]'>
                 {selectedCart && isFileOpen && 
                     <ProductDetail value={selectedCart} onClose={closeFile} />
                 }

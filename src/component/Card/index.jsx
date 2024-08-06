@@ -25,9 +25,8 @@ const Card = () => {
         fetchData();
     }, []);
 
- 
-
- 
+    // console.log(cardData);
+    
     return (
         <div className="" >
          

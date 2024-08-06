@@ -128,7 +128,7 @@ const Filter = () => {
                    
 
                 </div>
-                <div className='mt-1'>
+                <div className='mt-1 cursor-pointer'>
                    <CiBoxList size={30}/>
                    </div>
 
