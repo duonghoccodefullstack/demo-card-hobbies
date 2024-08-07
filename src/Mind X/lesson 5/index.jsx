@@ -1,6 +1,6 @@
 import { useState } from 'react';
 const Test = () => {
-  // true: sáng, false: tối
+ 
   const [theme, setTheme] = useState(true);
   const handleSetTheme = () => {
     setTheme(!theme);
