@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ButtonGroup, Rating, Button, Input } from '@mui/material';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -9,8 +9,13 @@ const ProductDetail = ({ value, onClose }) => {
         sizeChecked: true,
         quantity: 0,
         commentText: '',
-        comments: []
+        comments: [],
+        selectRate: null,
+        rateChecked: false
     });
+
+
+    const [rate, setRate] = useState([])
 
     const handleClick = (size) => {
         setProductInfo(prevState => ({
@@ -19,6 +24,34 @@ const ProductDetail = ({ value, onClose }) => {
             sizeChecked: false
         }));
     };
+    const handleRate = (item) => {
+        setRate(item)
+        console.log(`Bạn đã chọn ${item} sao`);
+
+    }
+    const [rating, setRating] = useState({
+        ratingLive :null,
+        reviewsRate:null
+    });
+    const Sum = useMemo(() => {
+        if (rate > 0 && productInfo.comments.length > 0) {
+                const newReviewsRate = value.rate.reviewsRate + 1  ;
+                // console.log(newReviewsRate);
+                // console.log(productInfo.comments.length);
+                
+                // console.log(rate);
+                const sum =  ( ((rate * productInfo.comments.length ) / newReviewsRate) + value.rate.ratingOld)
+                // console.log(sum);
+                setRating({
+                    ratingLive :sum,
+                    reviewsRate:newReviewsRate
+                })     
+            }
+    },[rate, productInfo , value])
+    useEffect(() => {
+        console.log(rating);
+    }, [rating]);
+
 
     const clickRemove = () => {
         setProductInfo(prevState => ({
@@ -26,22 +59,26 @@ const ProductDetail = ({ value, onClose }) => {
             quantity: Math.max(prevState.quantity - 1, 0)
         }));
     };
-
+   
     const clickAdd = () => {
         setProductInfo(prevState => ({
             ...prevState,
             quantity: prevState.quantity + 1
         }));
     };
-
+   
     const commentClick = () => {
         if (productInfo.commentText.trim()) {
             setProductInfo(prevState => ({
                 ...prevState,
                 comments: [...prevState.comments, prevState.commentText],
-                commentText: ''
+                commentText: '',
+                rateChecked:true,
+              
             }));
-        }
+        
+        }  
+        Sum()
     };
 
     const buyClick = () => {
@@ -56,9 +93,9 @@ const ProductDetail = ({ value, onClose }) => {
     };
 
     return (
-        <div className='w-full h-[2000px]'>
+        <div className='w-full h-auto'>
             <div className="w-[100vw] p-2 backdrop-blur-3xl bg-gray-200">
-                <div className='mx-20 my-20 px-10 h-[2000px] w-[70w] bg-white rounded-lg drop-shadow-2xl'>
+                <div className='mx-20 my-20 px-10 bg-white rounded-lg drop-shadow-2xl'>
                     <div className="flex justify-between mb-[60px] mt-10">
                         <div className="w-[40px] h-[40px] pt-2 rounded-lg ">
                             <Button
@@ -92,9 +129,14 @@ const ProductDetail = ({ value, onClose }) => {
                             <div>
                                 <h1 className="font-medium text-[28px]">{value.author}</h1>
                             </div>
-                            <div>
-                                <Rating value={value.rate} disabled style={{ opacity: 1 }} />
+                            <div className='flex justify-between '>
+                                <div className='flex'>
+                                    {rating.ratingLive ? Number(rating.ratingLive).toFixed(1) : Number(value.rate.ratingOld).toFixed(1)}
+                                    <Rating value={rating.ratingold  ? Number(rating.ratingold).toFixed() : Number(value.rate.ratingOld).toFixed()  } readOnly style={{ opacity: 1 }} />
+                                </div>
+                                <div>{rating.reviewsRate ? rating.reviewsRate : value.rate.reviewsRate} đánh giá </div>
                             </div>
+
                             <div className="flex items-center">
                                 <p>Giá: {(value.price * 1000).toLocaleString()} VND</p>
                                 <div className="p-1">
@@ -164,7 +206,7 @@ const ProductDetail = ({ value, onClose }) => {
                     </div>
                     <p className="text-[24px] font-medium mt-[46px]">{value.p}</p>
                     <div className="drop-shadow-2xl bg-gray-100 mt-10 rounded-lg">
-                        <div className="w-[979px] flex p-5 flex-col">
+                        <div className="flex p-5 flex-col">
                             <div className="flex">
                                 <div>
                                     <Avatar>
@@ -173,8 +215,17 @@ const ProductDetail = ({ value, onClose }) => {
                                     </Avatar>
                                 </div>
                                 <p className="pl-3 pt-2">John Doe</p>
+                                {[1, 2, 3, 4, 5].map((item) => (
+                                    <button
+                                        key={item}
+                                        onClick={() => handleRate(item)}
+                                        name='rating'
+                                        className={`mx-10`}>{item}</button>
+                                  
+                                ))}
+                                <p className='text-center flex pt-2'>sao</p>
                             </div>
-                            <div className="p-5 mr-2">
+                            <div className="p-5">
                                 <Input
                                     className="w-full text-black"
                                     value={productInfo.commentText}
@@ -201,7 +252,7 @@ const ProductDetail = ({ value, onClose }) => {
                                 </div>
                                 <button
                                     onClick={commentClick}
-                                    className="text-white bg-[#FF0404] rounded-lg px-4 py-2 mr-10"
+                                    className="text-white bg-[#FF0404] rounded-lg px-4 py-2"
                                 >
                                     Comments
                                 </button>
@@ -213,24 +264,23 @@ const ProductDetail = ({ value, onClose }) => {
                         <hr className="h-[2px] bg-black" />
                         <p className='font-semibold my-5'>Danh sách ghi chú</p>
                         <div className='border-2 rounded-lg p-5 mb-2'>
-                            <div>
-                                <div className='flex'>
-                                    <Avatar>
-                                        <AvatarImage src="/src/assets/avatar2.png" />
-                                        <AvatarFallback>You</AvatarFallback>
-                                    </Avatar>
-                                    <p className='p-2'>You</p>
-                                </div>
+                            <div className='flex'>
+                                <Avatar>
+                                    <AvatarImage src="/src/assets/avatar2.png" />
+                                    <AvatarFallback>You</AvatarFallback>
+                                </Avatar>
+                                <p className='p-2'>You</p>
+
+
                             </div>
                             <p className='py-5'>Sản phẩm này sẽ mua tặng cho gia đình sau ngày 15 nè!</p>
                             <div className='flex justify-between'>
                                 <div className='p-2'>Time</div>
-                                <div className="w-[20px] h-[40px] p-2 mr-10 rounded-lg">
+                                <div className="w-[20px] h-[40px] p-2 rounded-lg">
                                     <Button
                                         variant="contained"
                                         sx={{
                                             backgroundColor: '#DF3939',
-                                            width: "20px",
                                             color: 'white',
                                             '&:hover': {
                                                 backgroundColor: '#DF3939',
@@ -245,24 +295,21 @@ const ProductDetail = ({ value, onClose }) => {
                         <div>
                             {productInfo.comments.map((comment, index) => (
                                 <div key={index} className='border-2 rounded-lg p-5 mb-2'>
-                                    <div>
-                                        <div className='flex'>
-                                            <Avatar>
-                                                <AvatarImage src="/src/assets/avatar2.png" />
-                                                <AvatarFallback>You</AvatarFallback>
-                                            </Avatar>
-                                            <p className='p-2'>You</p>
-                                        </div>
+                                    <div className='flex'>
+                                        <Avatar>
+                                            <AvatarImage src="/src/assets/avatar2.png" />
+                                            <AvatarFallback>You</AvatarFallback>
+                                        </Avatar>
+
                                     </div>
                                     <p className="py-5">{comment}</p>
                                     <div className='flex justify-between'>
                                         <div className='p-2'>Time</div>
-                                        <div className="w-[20px] h-[40px] p-2 mr-10 rounded-lg">
+                                        <div className="w-[20px] h-[40px] p-2 rounded-lg">
                                             <Button
                                                 variant="contained"
                                                 sx={{
                                                     backgroundColor: '#DF3939',
-                                                    width: "20px",
                                                     color: 'white',
                                                     '&:hover': {
                                                         backgroundColor: '#DF3939',

@@ -47,7 +47,7 @@ const PaginatedGrid = ({ data, itemsPerPage }) => {
             <div className="grid grid-cols-4 gap-x-[30px] gap-y-[20px] w-full font-be py-[67px] px-[130px] h-[100vh] mb-52">
                 {currentItems.map((item) => (
                     <div className='cursor-default'>
-
+                    {/* <img src={item.s} alt="" /> */}
                     <div 
                     key={item.id}
                     onClick={() => handleCartClick(item)}
